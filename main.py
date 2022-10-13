@@ -14,6 +14,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from bs4 import BeautifulSoup
 from flask_gravatar import Gravatar
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
