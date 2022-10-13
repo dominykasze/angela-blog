@@ -1,0 +1,73 @@
+{% include "header.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('{{post.img_url}}')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1>{{post.title}}</h1>
+            <h2 class="subheading">{{post.subtitle}}</h2>
+            <span class="meta">Posted by
+              <!-- Changed from post.author -->
+              <a href="#">{{post.author.name}}</a>
+              on {{post.date}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Post Content -->
+  <article>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            {{ post.body|safe }}
+          <hr>
+            {{ ckeditor.load() }}
+            {{ wtf.quick_form(form, button_map={"submit": "primary"}, novalidate=True) }}
+            <!-- Only the user with id value of 1 is allowed to edit posts - this is done by checking if
+            the id of the current user is 1 (if it is, the Edit Post button is rendered) -->
+            {% if current_user.id == 1 %}
+            <div class="clearfix">
+              <a class="btn btn-primary float-right" href="{{url_for('edit_post', post_id=post.id)}}">Edit Post</a>
+            </div>
+            {% endif %}
+
+
+<!--           Comments Area -->
+          <div class="col-lg-8 col-md-10 mx-auto comment">
+              <ul class="commentList">
+                <!-- Displaying all comments for this blog post -->
+                {% for comment in comments %}
+                <li>
+                    <div class="commenterImage">
+                          <!-- Replacing default image with gravatar images -->
+<!--                      <img src="https://pbs.twimg.com/profile_images/744849215675838464/IH0FNIXk.jpg"/>-->
+                          <img src="{{ comment.author.email | gravatar }}"/>
+                    </div>
+                    <div class="commentText">
+                      <!-- Adding |safe in order to render the comments with its HTML tags. Without it HTML tags
+                      would be rendered as plain text (|safe tells the program that it is safe to render the tags) -->
+                      <p> {{ comment.text|safe }} </p>
+                      <!-- comment.author.name is used to get the name of the comment author. name is the attribute of
+                      author, and author attribute creates the bidirectional relatioship
+                      between blog_comments and blog_users tables -->
+                      <span class="date sub-text">{{ comment.author.name }}</span>
+                    </div>
+                {% endfor %}
+                </li>
+              </ul>
+            </div>
+
+
+          </div>
+      </div>
+    </div>
+  </article>
+
+  <hr>
+{% include "footer.html" %}
