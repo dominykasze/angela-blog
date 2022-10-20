@@ -43,8 +43,9 @@ def load_user(user_id):
 
 
 ##CONNECT TO DB
-# Changing the database from SQLite to Postgres
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+# Changing the database from SQLite to Postgres. Also, SQLite database is added as an alternative
+# which be used when the app is run locally
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///blog.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
