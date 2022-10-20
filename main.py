@@ -12,7 +12,6 @@ from flask_gravatar import Gravatar
 from functools import wraps
 from sqlalchemy import ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from bs4 import BeautifulSoup
 from flask_gravatar import Gravatar
 import os
 
